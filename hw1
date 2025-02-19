@@ -1,0 +1,59 @@
+import java.nio.charset.StandardCharsets;
+import java.util.*;
+
+public class DKA {
+    
+    private enum State {
+        q0, q1, q2
+    }
+
+    public static boolean accept(String input) {
+        State currentState = State.q0; 
+
+        for (char c : input.toCharArray()) {
+            switch (currentState) {
+                case q0:
+                    if (c == 'a') {
+                        currentState = State.q0; 
+                    } else if (c == 'b') {
+                        currentState = State.q1; 
+                    } else if (c == 'c') {
+                        currentState = State.q2; 
+                    } else {
+                        return false; 
+                    }
+                    break;
+                case q1:
+                    if (c == 'b') {
+                        currentState = State.q1; 
+                    } else if (c == 'c') {
+                        currentState = State.q2; 
+                    } else {
+                        return false; 
+                    }
+                    break;
+                case q2:
+                    if (c == 'c') {
+                        currentState = State.q2; 
+                    } else {
+                        return false; 
+                    }
+                    break;
+                default:
+                    return false; 
+            }
+        }
+
+       
+        return currentState == State.q0 || currentState == State.q1 || currentState == State.q2;
+    }
+
+    public static void main(String[] args) {
+ 
+        List<String> testStrings = Arrays.asList("abc", "ab", "c", "aabbcc", "acb", "aa", "bbccc", "bcca");
+
+        for (String test : testStrings) {
+            System.out.println("Цепочка: " + test + " - " + (accept(test) ? "Принята" : "Не принята"));
+        }
+    }
+}
