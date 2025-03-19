@@ -1,0 +1,58 @@
+public class DFARecognizer {
+
+    private static final int q0 = 0;  
+    private static final int q1 = 1;
+    private static final int q2 = 2;
+    private static final int q3 = 3;  
+
+    public static boolean recognize(String input) {
+        int currentState = q0; 
+
+        for (char c : input.toCharArray()) {
+            currentState = transition(currentState, c); 
+            if (currentState == -1) {
+                return false; 
+            }
+        }
+
+        return currentState == q0 || currentState == q3;
+    }
+
+    private static int transition(int currentState, char input) {
+        switch (currentState) {
+            case q0:
+                if (input == 'c') return q0;  
+                if (input == 'a') return q1;  
+                if (input == 'b') return q2; 
+            case q1:
+                if (input == 'a') return q1;  
+                if (input == 'b') return q2; 
+                break;
+            case q2:
+                if (input == 'a') return q2;  
+                if (input == 'b') return q3; 
+                break;
+            case q3:
+                if (input == 'a') return q3;  
+                if (input == 'b') return q2;  
+                break;
+        }
+        return -1;  
+    }
+
+    public static void main(String[] args) {
+        String[] testStrings = {
+            "ababb",       
+            "cccbabb",     
+            "aaaaabaaaabaaa",  
+            "bac",         
+            "abc",       
+            "cababa",
+            "aaabba"
+        };
+
+        for (String test : testStrings) {
+            System.out.println("String \"" + test + "\" is " + (recognize(test) ? "accepted" : "rejected"));
+        }
+    }
+}
